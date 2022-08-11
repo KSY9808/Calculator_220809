@@ -8,7 +8,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Calculator extends AppCompatActivity {
+import com.example.calculator_220809.CalculatorAll.AddClass;
+import com.example.calculator_220809.CalculatorAll.DivClass;
+import com.example.calculator_220809.CalculatorAll.MulClass;
+import com.example.calculator_220809.CalculatorAll.SubClass;
+
+import java.nio.BufferUnderflowException;
+
+public class Calculator2 extends AppCompatActivity {
 
     boolean isFirstInput = true; // 입력 값이 처음 입력되는지 체크
     double resultNumber = 0; // 계산 값 저장
@@ -20,12 +27,28 @@ public class Calculator extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calculator);
-        setTitle("계산기1");
+        setContentView(R.layout.activity_calculator2);
+        setTitle("계산기2");
 
         resultText = findViewById(R.id.textView);
-    }
+        resultText.setText("input");
 
+        //AddClass addClass = new AddClass();
+        //SubClass subClass = new SubClass();
+        //MulClass mulClass = new MulClass();
+        //DivClass divClass = new DivClass();
+
+        Button AddClick = findViewById(R.id.button_add);
+        AddClick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddClass addClass = new AddClass();
+                resultText.setText(addClass.text);
+            }
+        });
+
+    }
+/*
     // 사칙연산 값 반환
     public double doubleCal(double result, double lastNum, char operator) {
         if(operator == '+') {
@@ -42,39 +65,9 @@ public class Calculator extends AppCompatActivity {
         }
         return result;
     }
-
-    // +, -, x, / 버튼 클릭
-    public void operatorClick(View view) {
-        Button getButton = findViewById(view.getId());
-
-        if(view.getId() == R.id.button_equals) {
-            if(isFirstInput) {
-                resultNumber = 0;
-                setClearText(CLEAR_INPUT_TEXT);
-                // =를 두 번 이상 누를 때 처리
-            }
-            else {
-                resultNumber = doubleCal(resultNumber, Double.parseDouble(resultText.getText().toString()), operator);
-                resultText.setText(String.valueOf(resultNumber));
-                isFirstInput = true;
-            }
-        }
-        else {
-            if(isFirstInput) {
-                operator = getButton.getText().toString().charAt(0);
-            }
-            else {
-                double lastNum = Double.parseDouble(resultText.getText().toString());
-                resultNumber = doubleCal(resultNumber, lastNum, operator);
-                operator = getButton.getText().toString().charAt(0);
-                resultText.setText(String.valueOf(resultNumber));
-                isFirstInput = true;
-            }
-        }
-    }
-
+*/
     // 0 ~ 9 버튼 클릭
-    public void numButtonClick(View view) {
+    public void NumClick(View view) {
         Button getButton = findViewById(view.getId());
 
         if(isFirstInput) {
@@ -91,6 +84,12 @@ public class Calculator extends AppCompatActivity {
         }
     }
 
+    // 입력된 숫자 초기화
+    public void setClearText(String clearText) {
+        isFirstInput = true;
+        resultText.setText(clearText);
+    }
+/*
     // AC, CE 버튼 클릭
     public void buttonClick(View view) {
 
@@ -116,10 +115,34 @@ public class Calculator extends AppCompatActivity {
 
     }
 
-    // 입력된 숫자 초기화
-    public void setClearText(String clearText) {
-        isFirstInput = true;
-        resultText.setText(clearText);
-    }
+    // +, -, x, / 버튼 클릭
+    public void operatorClick(View view) {
+        Button getButton = findViewById(view.getId());
 
+        if(view.getId() == R.id.button_equals) {
+            if(isFirstInput) {
+                resultNumber = 0;
+                setClearText(CLEAR_INPUT_TEXT);
+                // =를 두 번 이상 누를 때 처리
+            }
+            else {
+                resultNumber = doubleCal(resultNumber, Double.parseDouble(resultText.getText().toString()), operator);
+                resultText.setText(String.valueOf(resultNumber));
+                isFirstInput = true;
+            }
+        }
+        else {
+            if(isFirstInput) {
+                operator = getButton.getText().toString().charAt(0);
+            }
+            else {
+                Double lastNum = Double.parseDouble(resultText.getText().toString());
+                resultNumber = doubleCal(resultNumber, lastNum, operator);
+                operator = getButton.getText().toString().charAt(0);
+                resultText.setText(String.valueOf(resultNumber));
+                isFirstInput = true;
+            }
+        }
+    }
+*/
 }

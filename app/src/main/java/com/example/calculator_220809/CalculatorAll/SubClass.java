@@ -9,4 +9,8 @@ public class SubClass {
         text2 = Integer.toString(sub);
     }
 
+    void sub(double n1, double n2) {
+        int result = (int)(n1 - n2);
+    }
+
 }

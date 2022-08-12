@@ -9,4 +9,8 @@ public class MulClass {
         text4 = Integer.toString(mul);
     }
 
+    void mul(double n1, double n2) {
+        int result = (int)(n1 * n2);
+    }
+
 }

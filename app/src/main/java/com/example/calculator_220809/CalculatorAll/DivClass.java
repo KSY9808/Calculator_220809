@@ -8,5 +8,9 @@ public class DivClass {
             int div = (int)(n1 / n2);
             text3 = Integer.toString(div);
     }
+
+    void div(double n1, double n2) {
+        int result = (int)(n1 / n2);
+    }
 }
 

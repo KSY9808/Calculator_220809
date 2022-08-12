@@ -27,10 +27,10 @@ public class Calculator2 extends AppCompatActivity {
 
         resultText = findViewById(R.id.textView);
 
-        AddClass addClass;
-        SubClass subClass;
-        MulClass mulClass;
-        DivClass divClass;
+        AddClass addClass = new AddClass();
+        //SubClass subClass;
+        //MulClass mulClass;
+        //DivClass divClass;
     }
 
     public void onClick(View view) {
@@ -64,8 +64,8 @@ public class Calculator2 extends AppCompatActivity {
                     num2 = Double.parseDouble(num);
                     //if를 사용하여 operator 연산 수행
                     if (operator == '+') {
-                        AddClass addClass = new AddClass(num1, num2);
-                        resultText.setText(addClass.text1);
+                        //AddClass addClass = new AddClass(num1, num2);
+                        resultText.setText("");
                     } else if (operator == '-') {
                         SubClass subClass = new SubClass(num1, num2);
                         resultText.setText(subClass.text2);

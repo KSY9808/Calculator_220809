@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,16 +12,12 @@ import com.example.calculator_220809.CalculatorAll.DivClass;
 import com.example.calculator_220809.CalculatorAll.MulClass;
 import com.example.calculator_220809.CalculatorAll.SubClass;
 
-import java.nio.BufferUnderflowException;
-
 public class Calculator2 extends AppCompatActivity {
 
-    boolean isFirstInput = true; // 입력 값이 처음 입력되는지 체크
-    double resultNumber = 0; // 계산 값 저장
+    //boolean isFirstInput = true; // 입력 값이 처음 입력되는지 체크
+    double num1, num2; // 처음 수와 다음 수 저장
+    TextView resultText; // 계산 값 출력
     char operator = '+'; // 연산자 저장
-
-    final String CLEAR_INPUT_TEXT = "0";
-    TextView resultText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,118 +26,90 @@ public class Calculator2 extends AppCompatActivity {
         setTitle("계산기2");
 
         resultText = findViewById(R.id.textView);
-        resultText.setText("input");
 
-        //AddClass addClass = new AddClass();
-        //SubClass subClass = new SubClass();
-        //MulClass mulClass = new MulClass();
-        //DivClass divClass = new DivClass();
-
-        Button AddClick = findViewById(R.id.button_add);
-        AddClick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AddClass addClass = new AddClass();
-                resultText.setText(addClass.text);
-            }
-        });
-
-    }
-/*
-    // 사칙연산 값 반환
-    public double doubleCal(double result, double lastNum, char operator) {
-        if(operator == '+') {
-            result += lastNum;
-        }
-        else if(operator == '-') {
-            result -= lastNum;
-        }
-        else if(operator == '/') {
-            result /= lastNum;
-        }
-        else if(operator == 'x') {
-            result *= lastNum;
-        }
-        return result;
-    }
-*/
-    // 0 ~ 9 버튼 클릭
-    public void NumClick(View view) {
-        Button getButton = findViewById(view.getId());
-
-        if(isFirstInput) {
-            resultText.setText(getButton.getText().toString());
-            isFirstInput = false;
-        }
-        else {
-            if(resultText.getText().toString().equals("0")) {
-                Toast.makeText(getApplicationContext(), "초기 입력값이 0입니다.", Toast.LENGTH_LONG).show();
-                setClearText(CLEAR_INPUT_TEXT);
-                return;
-            }
-            resultText.append(getButton.getText().toString());
-        }
+        AddClass addClass;
+        SubClass subClass;
+        MulClass mulClass;
+        DivClass divClass;
     }
 
-    // 입력된 숫자 초기화
-    public void setClearText(String clearText) {
-        isFirstInput = true;
-        resultText.setText(clearText);
-    }
-/*
-    // AC, CE 버튼 클릭
-    public void buttonClick(View view) {
+    public void onClick(View view) {
+        String num = resultText.getText().toString();
 
-        switch(view.getId()) {
-            case R.id.button_left_empty:
-                resultNumber = 0;
-                operator = '+';
-                setClearText(CLEAR_INPUT_TEXT);
-                break;
-
+        switch (view.getId()) {
             case R.id.button_right_empty:
-                if(resultText.getText().toString().length() > 1) {
-                    String getResultText = resultText.getText().toString();
-                    String subString = getResultText.substring(0,getResultText.length()-1);
-                    resultText.setText(subString);
-                }
-                else {
-                    resultText.setText(CLEAR_INPUT_TEXT);
-                    isFirstInput = true;
+                resultText.setText("");
+                break;
+            case R.id.button_add: case R.id.button_sub: case R.id.button_mul: case R.id.button_div: // 연산자 버튼 눌렀을 때 operator 지정
+                if(num.equals("")) {
+                    Toast.makeText(getApplicationContext(), "숫자를 먼저 입력하세요", Toast.LENGTH_SHORT).show();
+                } else {
+                    num1 = Double.parseDouble(num);
+                    num = "";
+                    resultText.setText(num);
+                    if(view.getId() == R.id.button_add)
+                        operator = '+';
+                    else if(view.getId() == R.id.button_sub)
+                        operator = '-';
+                    else if(view.getId() == R.id.button_mul)
+                        operator = '*';
+                    else if(view.getId() == R.id.button_div)
+                        operator = '/';
                 }
                 break;
+            case R.id.button_equals:
+                if(num.equals("")) {
+                    Toast.makeText(getApplicationContext(), "숫자를 먼저 입력하세요", Toast.LENGTH_SHORT).show();
+                } else {
+                    num2 = Double.parseDouble(num);
+                    //if를 사용하여 operator 연산 수행
+                    if (operator == '+') {
+                        AddClass addClass = new AddClass(num1, num2);
+                        resultText.setText(addClass.text1);
+                    } else if (operator == '-') {
+                        SubClass subClass = new SubClass(num1, num2);
+                        resultText.setText(subClass.text2);
+                    } else if (operator == '/') {
+                        if (num2 == 0) {
+                            Toast.makeText(getApplicationContext(), "0으로 나눌 수 없습니다 다시 입력하세요", Toast.LENGTH_SHORT).show();
+                            resultText.setText("");
+                        } else {
+                            DivClass divClass = new DivClass(num1, num2);
+                            resultText.setText(divClass.text3);
+                        }
+                    } else if (operator == '*') {
+                        MulClass mulClass = new MulClass(num1, num2);
+                        resultText.setText(mulClass.text4);
+                    }
+                }
+                break;
+            case R.id.button_0: case R.id.button_1: case R.id.button_2: case R.id.button_3:
+            case R.id.button_4: case R.id.button_5: case R.id.button_6: case R.id.button_7:
+            case R.id.button_8: case R.id.button_9:
+                if(view.getId() == R.id.button_0) {
+                    num += "0";
+                } else if (view.getId() == R.id.button_1) {
+                    num += "1";
+                } else if (view.getId() == R.id.button_2) {
+                    num += "2";
+                } else if (view.getId() == R.id.button_3) {
+                    num += "3";
+                } else if (view.getId() == R.id.button_4) {
+                    num += "4";
+                } else if (view.getId() == R.id.button_5) {
+                    num += "5";
+                } else if (view.getId() == R.id.button_6) {
+                    num += "6";
+                } else if (view.getId() == R.id.button_7) {
+                    num += "7";
+                } else if (view.getId() == R.id.button_8) {
+                    num += "8";
+                } else if (view.getId() == R.id.button_9) {
+                    num += "9";
+                }
+                resultText.setText(num);
+                break;
         }
-
     }
 
-    // +, -, x, / 버튼 클릭
-    public void operatorClick(View view) {
-        Button getButton = findViewById(view.getId());
-
-        if(view.getId() == R.id.button_equals) {
-            if(isFirstInput) {
-                resultNumber = 0;
-                setClearText(CLEAR_INPUT_TEXT);
-                // =를 두 번 이상 누를 때 처리
-            }
-            else {
-                resultNumber = doubleCal(resultNumber, Double.parseDouble(resultText.getText().toString()), operator);
-                resultText.setText(String.valueOf(resultNumber));
-                isFirstInput = true;
-            }
-        }
-        else {
-            if(isFirstInput) {
-                operator = getButton.getText().toString().charAt(0);
-            }
-            else {
-                Double lastNum = Double.parseDouble(resultText.getText().toString());
-                resultNumber = doubleCal(resultNumber, lastNum, operator);
-                operator = getButton.getText().toString().charAt(0);
-                resultText.setText(String.valueOf(resultNumber));
-                isFirstInput = true;
-            }
-        }
-    }
-*/
 }
